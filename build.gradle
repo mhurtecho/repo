@@ -11,4 +11,5 @@ repositories {
 }
 
 dependencies {
+	compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.1'
 }
