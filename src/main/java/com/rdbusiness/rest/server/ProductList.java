@@ -33,9 +33,13 @@ public class ProductList {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Product> getProducts() {
-		System.out.println("hola olixxxxxxx" + request.getMethod());
 		return productService.getProductAsList();
 	}
 	
-	
+	@GET
+	@Path("/json")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getProducts2() {
+		return "{\"category\":\"Mobile\",\"id\":\"1001\",\"name\":\"iPhone 5S\"}";
+	}
 }

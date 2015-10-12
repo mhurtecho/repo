@@ -12,4 +12,5 @@ repositories {
 
 dependencies {
 	compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.1'
+	compile 'org.mongodb:mongodb-driver:3.0.4'
 }
