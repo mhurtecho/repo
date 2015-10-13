@@ -7,7 +7,7 @@ public class Product {
 	private String id;
 	private String name;
 	private String category;
-	
+
 	public Product() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,6 +41,11 @@ public class Product {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	@Override
+	public String toString() {
+		return "{\"id\":\"" + id + "\",\"name\":\"" + name + "\",\"category\":\"" + category + "\"}";
 	}
 
 }
