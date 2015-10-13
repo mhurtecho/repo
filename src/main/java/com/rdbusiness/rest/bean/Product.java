@@ -1,4 +1,4 @@
-package com.rdbusiness.rest.json;
+package com.rdbusiness.rest.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

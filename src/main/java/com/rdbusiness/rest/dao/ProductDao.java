@@ -1,26 +1,56 @@
 package com.rdbusiness.rest.dao;
 
-import java.util.HashMap;
-import java.util.Map;
+import static com.mongodb.client.model.Filters.eq;
 
-import com.rdbusiness.rest.json.Product;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.mongodb.client.MongoCollection;
+import com.rdbusiness.mongodb.DBConnection;
+import com.rdbusiness.rest.bean.Product;
 
 public class ProductDao {
-	
-	private Map<String, Product> products = new HashMap<>();
+
+	private MongoCollection<Document> collection;
 
 	public ProductDao() {
-		Product product = new Product("1001", "iPhone 5S", "Mobile");
-		products.put("1", product);
-
-		product = new Product("1002", "Sony MDR-XD200", "Headphone");
-		products.put("2", product);
-
-		product = new Product("1003", "Bose Wave II", "Home Audio");
-		products.put("3", product);
+		collection = DBConnection.getCollection("product");
 	}
 
-	public Map<String, Product> getProducts() {
-		return products;
+	public String getList() {
+		StringBuilder stb = new StringBuilder("[");
+
+		for (Document cur : collection.find()) {
+			stb.append(cur.toJson());
+		}
+
+		return stb.append("]").toString();
 	}
+
+	public String get(String id) {
+		Document doc = collection.find(eq("_id", new ObjectId(id))).first();
+
+		return doc.toJson();
+	}
+
+	public void update(String id, Product product) {
+		Document doc = new Document("id", product.getId()).append("name", product.getName()).append("category",
+				product.getCategory());
+
+		collection.updateOne(eq("_id", new ObjectId(id)), new Document("$set", doc));
+	}
+
+	public void delete(String id) {
+		collection.deleteOne(eq("_id", new ObjectId(id)));
+	}
+
+	public String create(Product product) {
+		Document doc = new Document("id", product.getId()).append("name", product.getName()).append("category",
+				product.getCategory());
+
+		collection.insertOne(doc);
+
+		return doc.get("_id").toString();
+	}
+
 }
