@@ -12,7 +12,8 @@ repositories {
 
 dependencies {
 	compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.1'
-	compile 'org.mongodb:mongodb-driver:3.0.4'
+    compile 'org.springframework.data:spring-data-mongodb:1.8.0.RELEASE'
+    runtime 'org.springframework:spring-web:4.1.7.RELEASE'
 	runtime 'org.glassfish.jersey.media:jersey-media-json-jackson:2.22.1'
-	testCompile 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.22.1'	
+	runtime 'org.glassfish.jersey.ext:jersey-spring3:2.22.1'
 }

@@ -2,14 +2,18 @@ package com.rdbusiness.rest.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @XmlRootElement
+@Document
 public class Product {
+	@Id
 	private String id;
 	private String name;
 	private String category;
 
 	public Product() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Product(String id, String name, String category) {

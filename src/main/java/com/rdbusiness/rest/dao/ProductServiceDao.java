@@ -1,32 +1,34 @@
 package com.rdbusiness.rest.dao;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+import com.rdbusiness.mongodb.repo.ProductRepository;
 import com.rdbusiness.rest.bean.Product;
 
 public class ProductServiceDao {
 
-	ProductDao productDao;
+	@Inject
+	private ProductRepository repository;
 
-	public ProductServiceDao() {
-		productDao = new ProductDao();
+	public List<Product> getProductList() {
+		return repository.findAll();
 	}
 
-	public String getProductList() {
-		return productDao.getList();
+	public Product getProduct(String id) {
+		return repository.findOne(id);
 	}
 
-	public String getProduct(String id) {
-		return productDao.get(id);
-	}
-
-	public void updateProduct(String id, Product product) {
-		productDao.update(id, product);
+	public void updateProduct(Product product) {
+		repository.save(product);
 	}
 
 	public void deleteProduct(String id) {
-		productDao.delete(id);
+		repository.delete(id);
 	}
 
-	public String createProduct(Product product) {
-		return productDao.create(product);
+	public Product createProduct(Product product) {
+		return repository.insert(product);
 	}
 }
