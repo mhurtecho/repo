@@ -1,4 +1,4 @@
-package com.rdbusiness.rest.service;
+package com.rdbusiness.rest.endpoint;
 
 import java.util.List;
 
@@ -17,53 +17,49 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
 import com.rdbusiness.rest.bean.Product;
-import com.rdbusiness.rest.dao.ProductServiceDao;
+import com.rdbusiness.rest.service.Service;
 
 @Path("/product")
-public class ProductService {
+@Produces({ MediaType.APPLICATION_JSON })
+@Consumes({ MediaType.APPLICATION_JSON })
+public class EndpointProduct {
 
 	@Context
-	UriInfo uriInfo;
+	private UriInfo uriInfo;
 
 	@Context
-	Request request;
-	
+	private Request request;
+
 	@Inject
-	ProductServiceDao productServiceDao;
+	private Service<Product> service;
 
-	
 	@GET
 	@Path("/list")
-	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Product> getProductList() {
-		return productServiceDao.getProductList();
+		return service.getList();
 	}
 
 	@GET
 	@Path("{id}")
-	@Produces({ MediaType.APPLICATION_JSON })
 	public Product getProduct(@PathParam("id") String id) {
-		return productServiceDao.getProduct(id);
+		return service.get(id);
 	}
 
 	@PUT
 	@Path("{id}")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	public void updateProduct(@PathParam("id") String id, Product product) {
-		productServiceDao.updateProduct(product);
+	public Product updateProduct(@PathParam("id") String id, Product product) {
+		return service.update(product);
 	}
 
 	@DELETE
 	@Path("{id}")
-	@Produces({ MediaType.APPLICATION_JSON })
 	public void deleteProduct(@PathParam("id") String id) {
-		productServiceDao.deleteProduct(id);
+		service.delete(id);
 	}
 
 	@POST
 	@Path("/add")
-	@Consumes({ MediaType.APPLICATION_JSON })
 	public Product createProduct(Product product) {
-		return productServiceDao.createProduct(product);
+		return service.create(product);
 	}
 }

@@ -10,13 +10,18 @@
     http://www.springframework.org/schema/data/mongo
     http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
+
 	<context:component-scan base-package="com.rdbusiness.rest.service" />
 
-	<mongo:mongo id="mongo" host="localhost" />
+	<bean name="fongo" class="com.github.fakemongo.Fongo">
+		<constructor-arg value="InMemoryMongo" />
+	</bean>
+	<bean id="mongo" factory-bean="fongo" factory-method="getMongo" />
+
+	<mongo:db-factory id="mongoDbFactory" mongo-ref="mongo" />
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg ref="mongo" />
-		<constructor-arg value="dbzero" />
+		<constructor-arg ref="mongoDbFactory" />
 	</bean>
 
 	<mongo:repositories base-package="com.rdbusiness.mongodb.repo" />

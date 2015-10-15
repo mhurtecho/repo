@@ -48,6 +48,22 @@ public class Product {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof Product) {
+			Product p = (Product) obj;
+
+			if (this.getId().equals(p.getId()) &&
+					this.getName().equals(p.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		return "{\"id\":\"" + id + "\",\"name\":\"" + name + "\",\"category\":\"" + category + "\"}";
 	}
