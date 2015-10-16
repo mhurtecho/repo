@@ -7,12 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @XmlRootElement
 @Document
-public class Product {
+public class Person {
 	@Id
 	private String id;
 	private String name;
-	private String category;
-
+	private String lastName;
+	
 
 	public String getId() {
 		return id;
@@ -26,16 +26,16 @@ public class Product {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String firstName) {
+		this.name = firstName;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Override
@@ -43,11 +43,10 @@ public class Product {
 		if (this == obj) {
 			return true;
 		}
-		if (obj instanceof Product) {
-			Product p = (Product) obj;
+		if (obj instanceof Person) {
+			Person p = (Person) obj;
 
-			if (this.getId().equals(p.getId()) &&
-					this.getName().equals(p.getName())) {
+			if (this.getId().equals(p.getId()) && this.getName().equals(p.getName())) {
 				return true;
 			}
 		}
@@ -56,7 +55,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "{\"id\":\"" + id + "\",\"name\":\"" + name + "\",\"category\":\"" + category + "\"}";
+		return "{\"id\":\"" + id + "\",\"firstName\":\"" + name + "\",\"lastName\":\"" + lastName + "\"}";
 	}
 
 }
