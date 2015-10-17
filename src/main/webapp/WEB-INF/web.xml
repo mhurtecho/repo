@@ -17,14 +17,14 @@
 	</context-param>
 
 	<!-- JETTY CONFIG -->
-	<servlet>
-		<servlet-name>default</servlet-name>
-		<servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
-		<init-param>
-			<param-name>dirAllowed</param-name>
-			<param-value>false</param-value>
-		</init-param>
-	</servlet>
+<!-- 	<servlet> -->
+<!-- 		<servlet-name>default</servlet-name> -->
+<!-- 		<servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>dirAllowed</param-name> -->
+<!-- 			<param-value>false</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</servlet> -->
 
 	<!-- JERSEY CONFIG -->
 	<servlet>
