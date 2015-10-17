@@ -78,9 +78,10 @@ public class EndpointTest extends JerseyTest {
 		CREATE, UPDATE, DELETE, GET
 	}
 
-	private static List<Class<?>> endpoints = new ArrayList<>();
+	private static List<Class<?>> endpoints;
 
-	{
+	static {
+		endpoints = new ArrayList<>();
 		endpoints.add(EndpointProduct.class);
 		endpoints.add(EndpointPerson.class);
 	}
