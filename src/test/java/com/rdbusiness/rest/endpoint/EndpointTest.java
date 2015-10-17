@@ -2,6 +2,8 @@ package com.rdbusiness.rest.endpoint;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
@@ -12,8 +14,6 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 
 public class EndpointTest extends JerseyTest {
-
-	private static Class<?>[] endpoints = { EndpointProduct.class, EndpointPerson.class };
 
 	@Override
 	protected Application configure() {
@@ -76,6 +76,13 @@ public class EndpointTest extends JerseyTest {
 
 	public enum crud {
 		CREATE, UPDATE, DELETE, GET
+	}
+
+	private static List<Class<?>> endpoints = new ArrayList<>();
+
+	{
+		endpoints.add(EndpointProduct.class);
+		endpoints.add(EndpointPerson.class);
 	}
 
 }

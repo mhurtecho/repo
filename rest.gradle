@@ -1,0 +1,105 @@
+project.ext.set('dir_bean', './src/main/java/com/rdbusiness/rest/bean/')
+project.ext.set('dir_repo', './src/main/java/com/rdbusiness/mongodb/repo/')
+project.ext.set('dir_service', './src/main/java/com/rdbusiness/rest/service/')
+project.ext.set('dir_endpoint', './src/main/java/com/rdbusiness/rest/endpoint/')
+project.ext.set('dir_test', './src/test/java/com/rdbusiness/rest/endpoint/')
+project.ext.set('parent_test', 'EndpointTest.java')
+
+task mkrest << {
+	if (project.hasProperty('service')) {
+		def _service = service.substring(0, 1).toUpperCase() + service.substring(1).toLowerCase()
+		
+		println ':::::: building rest service '+ _service
+		
+		def files = new File("./template").eachFile() { file ->
+		   def _name = file.name.replace('XXX', _service)
+	       
+	       println "====> building file ${_name}..."
+	       
+	       def content = file.text
+	       
+	       content = content.replaceAll('xxx', _service.substring(0, 1).toLowerCase() + _service.substring(1))
+	       content = content.replaceAll('XXX', _service)
+	       
+	       def dir
+	       
+	       if (file.name.equals('XXX.java')) {
+	       		dir = dir_bean
+	       } else if (file.name.contains('Test')) {
+	       		dir = dir_test
+	       } else if (file.name.contains('Endpoint')) {
+	       		dir = dir_endpoint
+	       } else if (file.name.contains('Repository')) {
+	       		dir = dir_repo
+	       } else if (file.name.contains('Service')) {
+	       		dir = dir_service
+	       }
+	       
+	       new File(dir + _name).text = content
+	    }
+	    
+	    println '++++ modifing test...'
+		
+		def endpoint_test = new File(dir_test + parent_test)
+		def content_test = endpoint_test.text
+		
+		def idx1 = content_test.lastIndexOf('endpoints.add')
+		def idx2 = content_test.indexOf(';', idx1)
+		
+		endpoint_test.text = """${content_test.substring(0, idx2 + 1)}
+					|\t\tendpoints.add(Endpoint${_service}.class);
+					|${content_test.substring(idx2 + 2)}""".stripMargin()
+						
+		println '::::::done :-)' 
+	} else {
+		println 'name service missing!!!'
+	}	
+}
+
+task rmrest << {
+	if (project.hasProperty('service')) {
+		def _service = service.substring(0, 1).toUpperCase() + service.substring(1).toLowerCase()
+		
+		println ':::::: removing rest service '+ _service
+		
+		def files = new File("./template").eachFile() { file ->
+		   def _name = file.name.replace('XXX', _service)
+	       
+	       println "====> removing file ${_name}..."
+	       
+	       def dir
+	       
+	       if (file.name.equals('XXX.java')) {
+	       		dir = project.dir_bean
+	       } else if (file.name.contains('Test')) {
+	       		dir = dir_test
+	       } else if (file.name.contains('Endpoint')) {
+	       		dir = dir_endpoint
+	       } else if (file.name.contains('Repository')) {
+	       		dir = dir_repo
+	       } else if (file.name.contains('Service')) {
+	       		dir = dir_service
+	       }
+	       
+	       new File(dir + _name).delete()
+	    }
+	    
+	    println '++++ modifing test...'
+		
+		def endpoint_test = new File(dir_test + parent_test)
+		def content_test = endpoint_test.text
+		
+		def idx1 = content_test.lastIndexOf('endpoints.add(Endpoint' + _service)
+		
+		if (idx1 > 0) {
+			def idx2 = content_test.indexOf(';', idx1)
+		
+			endpoint_test.text = """${content_test.substring(0, idx1)}
+					|${content_test.substring(idx2 + 2)}""".stripMargin()
+		}
+		
+		println '::::::done :-(' 
+	} else {
+		println 'name service missing!!!'
+	}
+}
