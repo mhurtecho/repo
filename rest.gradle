@@ -94,7 +94,7 @@ task rmrest << {
 		if (idx1 > 0) {
 			def idx2 = content_test.indexOf(';', idx1)
 		
-			endpoint_test.text = """${content_test.substring(0, idx1 - 2)}
+			endpoint_test.text = """${content_test.substring(0, idx1 - 3)}
 					|${content_test.substring(idx2 + 2)}""".stripMargin()
 		}
 		
