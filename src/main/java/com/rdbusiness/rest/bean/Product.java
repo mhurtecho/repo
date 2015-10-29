@@ -3,10 +3,12 @@ package com.rdbusiness.rest.bean;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @XmlRootElement
 @Document
+@TypeAlias("o_product")
 public class Product {
 	@Id
 	private String id;

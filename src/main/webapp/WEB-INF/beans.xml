@@ -12,11 +12,19 @@
 
 	<context:component-scan base-package="com.rdbusiness.rest.service, com.rdbusiness.rest.endpoint" />
 
-	<mongo:mongo id="mongo" host="localhost" />
+<!-- 	<mongo:mongo id="mongo" host="mongodb69463-app-zero.jelasticlw.com.br" port="27017" /> -->
+<!--  	<mongo:mongo id="mongo" host="ds041144.mongolab.com" port="41144" />  -->
+	<mongo:mongo id="mongo" host="localhost" port="27017" />
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg ref="mongo" />
 		<constructor-arg value="dbzero" />
+		<constructor-arg name="userCredentials" ref="userCredentials"/>
+	</bean>
+
+	<bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+	  <constructor-arg name="username" value="admin" />
+	  <constructor-arg name="password" value="1234" />
 	</bean>
 
 	<mongo:repositories base-package="com.rdbusiness.mongodb.repo" />
