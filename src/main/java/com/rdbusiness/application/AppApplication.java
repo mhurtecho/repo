@@ -15,14 +15,12 @@ public class AppApplication extends ResourceConfig implements WebApplicationInit
 
 	public AppApplication() {
 		//jersey configuration
-		System.out.println("@@@@@@@@@@@@@@@@@ JERSEY ");
 		packages("com.rdbusiness.rest.endpoint");
 	}
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		//spring configuration
-		System.out.println("@@@@@@@@@@@@@@@@@ SPRING ");
 		servletContext.setInitParameter("contextConfigLocation", "/WEB-INF/beans.xml");
 		servletContext.addListener(ContextLoaderListener.class);
 	}

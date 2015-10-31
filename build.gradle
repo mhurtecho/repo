@@ -1,56 +1,88 @@
 apply plugin: 'java'
+apply plugin: 'war'
 apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 version = '1.0'
 
-repositories {
-  mavenCentral()
-}
+repositories { mavenCentral() }
+
+configurations { embeddedJetty }
 
 dependencies {
-	compile 'org.eclipse.jetty:jetty-server:9.1.1.v20140108'
-	compile 'org.eclipse.jetty:jetty-webapp:9.1.1.v20140108'
-	compile 'org.eclipse.jetty:jetty-annotations:9.1.1.v20140108'
-	runtime 'org.eclipse.jetty:jetty-servlet:9.1.1.v20140108'
-	runtime 'org.eclipse.jetty:jetty-servlets:9.1.1.v20140108'
+	ext { jettyVersion = '9.2.1.v20140609' }//9.3.5.v20151012
 	
+	embeddedJetty "org.eclipse.jetty:jetty-server:$jettyVersion"
+	embeddedJetty "org.eclipse.jetty:jetty-webapp:$jettyVersion"
+	embeddedJetty "org.eclipse.jetty:jetty-annotations:$jettyVersion"
+	embeddedJetty "org.eclipse.jetty:jetty-servlet:$jettyVersion"
+	embeddedJetty "org.eclipse.jetty:jetty-servlets:$jettyVersion"
+	embeddedJetty "org.eclipse.jetty:jetty-plus:$jettyVersion"
+
 	compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.1'
 	compile 'org.springframework.data:spring-data-mongodb:1.8.0.RELEASE'
 	compile 'org.springframework:spring-web:4.1.7.RELEASE'
-//	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.4.1'
-//	compile 'org.apache.logging.log4j:log4j-core:2.4.1'
-	
+
 	runtime 'org.glassfish.jersey.media:jersey-media-json-jackson:2.22.1'
 	runtime 'org.glassfish.jersey.ext:jersey-spring3:2.22.1'
-	runtime 'org.slf4j:slf4j-jdk14:1.7.5'
-	
+	runtime 'org.slf4j:slf4j-jdk14:1.7.12'
+	runtime "org.eclipse.jetty:jetty-annotations:$jettyVersion"
+	runtime "org.eclipse.jetty:jetty-plus:$jettyVersion"
+
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-jetty:2.22.1'
 	testCompile 'com.github.fakemongo:fongo:1.6.2'
 }
 
-jar {
-	// Name your JAR file. If omitted, the JAR is named after the project.
-   archiveName = "app-zero.jar"
-  
-   // Here the JAR is built, the dependent JARs are unzipped and added to the final JAR
-   // If the zipTree command would be omitted, it would simply add the zipped JARs to the
-   // executable JAR. However the Classloader Exception would be back.
-   // compile vs. runtime shouldn't matter too much. However not all dependencies that
-   // are in compile are in runtime.
-   from configurations.runtime.collect {
-	  zipTree(it)
-   }
-	 
-   // Add your main class to the manifest
-   manifest {
-	  attributes 'Main-Class': 'com.rdbusiness.application.Main'
-   }
-	 
-   // Exclude signature files from JARs
-   exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+sourceSets.main.compileClasspath += configurations.embeddedJetty
+
+war {
+	from {
+		configurations.embeddedJetty.collect { project.zipTree(it) }
+	}
+	exclude "META-INF/*.SF", "META-INF/*.RSA", "about.html", "about_files/**", "readme.txt", "plugin.properties", "jetty-dir.css"
+
+	from "$buildDir/classes/main"
+	exclude "com/rdbusiness/rest","com/rdbusiness/mongodb"
+
+	manifest { attributes 'Main-Class': 'com.rdbusiness.application.Main' }
 }
+
+eclipse {
+	classpath {
+		plusConfigurations += [configurations.embeddedJetty]
+	}
+}
+
+task warExec(type: JavaExec, dependsOn:build) {
+	main = '-jar'
+	args war.archivePath
+}
+
+task warExecDebug(type: Exec) {
+	commandLine 'gradle', 'wE', '--debug-jvm'
+}
+//jar {
+//	// Name your JAR file. If omitted, the JAR is named after the project.
+//   archiveName = "app-zero.jar"
+//
+//   // Here the JAR is built, the dependent JARs are unzipped and added to the final JAR
+//   // If the zipTree command would be omitted, it would simply add the zipped JARs to the
+//   // executable JAR. However the Classloader Exception would be back.
+//   // compile vs. runtime shouldn't matter too much. However not all dependencies that
+//   // are in compile are in runtime.
+//   from configurations.runtime.collect {
+//	  zipTree(it)
+//   }
+//
+//   // Add your main class to the manifest
+//   manifest {
+//	  attributes 'Main-Class': 'com.rdbusiness.application.Main'
+//   }
+//
+//   // Exclude signature files from JARs
+//   exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+//}
 
 apply from: 'rest.gradle'
