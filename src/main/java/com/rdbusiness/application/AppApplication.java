@@ -5,23 +5,35 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.ws.rs.ApplicationPath;
 
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 
-@ApplicationPath("rest")
+import com.rdbusiness.rest.endpoint.Endpoint;
+
+@ApplicationPath(Config.PATH)
 @Priority(value = 1)
 public class AppApplication extends ResourceConfig implements WebApplicationInitializer {
 
+	private static final Logger LOG = Log.getLogger(AppApplication.class);
+
 	public AppApplication() {
-		//jersey configuration
-		packages("com.rdbusiness.rest.endpoint");
+		LOG.info("Jersey configuration: PATH[" + Config.PATH + "], " + "PACKAGE[" + Config.PACKAGE + "]");
+		packages(Config.PACKAGE);
 	}
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		//spring configuration
-		servletContext.setInitParameter("contextConfigLocation", "/WEB-INF/beans.xml");
+		LOG.info("Spring configuration: " + Config.APP_CONFIG);
+		servletContext.setInitParameter("contextConfigLocation", Config.APP_CONFIG);
 		servletContext.addListener(ContextLoaderListener.class);
 	}
+}
+
+class Config {
+	public static final String PATH = "rest";
+	public static final String PACKAGE = Endpoint.class.getPackage().getName();
+	public static final String APP_CONFIG = "/WEB-INF/beans.xml";
 }

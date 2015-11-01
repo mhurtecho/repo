@@ -16,7 +16,7 @@ import org.eclipse.jetty.webapp.Configuration.ClassList;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 
-public class Main {
+public class EmbeddedWar {
 
 	public static void main(String[] args) throws Exception {
 		Server server = new Server(8080);
@@ -31,7 +31,7 @@ public class Main {
 
 		context.setContextPath("/");
 
-		ProtectionDomain protectionDomain = Main.class.getProtectionDomain();
+		ProtectionDomain protectionDomain = EmbeddedWar.class.getProtectionDomain();
 		URL location = protectionDomain.getCodeSource().getLocation();
 		context.setWar(location.toExternalForm());
 
