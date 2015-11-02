@@ -26,8 +26,8 @@ public class AppApplication extends ResourceConfig implements WebApplicationInit
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		LOG.info("Spring configuration: " + Config.APP_CONFIG);
-		servletContext.setInitParameter("contextConfigLocation", Config.APP_CONFIG);
+		LOG.info("Spring configuration: " + Config.SPRING_CONFIG);
+		servletContext.setInitParameter("contextConfigLocation", Config.SPRING_CONFIG);
 		servletContext.addListener(ContextLoaderListener.class);
 	}
 }
@@ -35,5 +35,5 @@ public class AppApplication extends ResourceConfig implements WebApplicationInit
 class Config {
 	public static final String PATH = "rest";
 	public static final String PACKAGE = Endpoint.class.getPackage().getName();
-	public static final String APP_CONFIG = "/WEB-INF/beans.xml";
+	public static final String SPRING_CONFIG = "classpath*:**/beans.xml";
 }
