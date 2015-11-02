@@ -1,6 +1,11 @@
-apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'eclipse'
+plugins {
+	id 'java'
+	id 'war'
+	id 'eclipse'
+	id 'idea'
+	id 'com.github.johnrengelman.shadow' version '1.2.2'
+}
+apply from: 'rest.gradle'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -63,37 +68,28 @@ task warExec(type: JavaExec, dependsOn:build) {
 	args war.archivePath
 }
 
-task warExecDebug(type: Exec) { commandLine 'gradle', 'wE', '--debug-jvm' }
+task warExecDebug(type: Exec) { commandLine 'gradle', 'warExec', '--debug-jvm' }
 
-task fatJar(type: Jar) {
-	from configurations.embeddedJetty.collect { zipTree(it) }
-	from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
-	with jar
+jar {
 	manifest {
+		attributes 'Author': 'RDBusiness'
 		attributes 'Main-Class': 'com.rdbusiness.application.EmbeddedJar'
 	}
 }
 
-//jar {
-//	//from files(sourceSets.main.output.classesDir)
-//	//from configurations.runtime.collect { zipTree(it) }
-//	from configurations.embeddedJetty.collect { zipTree(it) }
-//	
-//	from(configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }) {
-//		exclude "META-INF/*.SF"
-//		exclude "META-INF/*.DSA"
-//		exclude "META-INF/*.RSA"
-//	}
-//
-//	//   from configurations.runtime.collect {
-//	//	  zipTree(it)
-//	//   }
-//
-//   manifest {
-//	  attributes 'Main-Class': 'com.rdbusiness.application.EmbeddedJar'
-//   }
-//
-//   exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA', "about.html", "about_files/**", "readme.txt", "plugin.properties", "jetty-dir.css"
-//}
+shadowJar {	
+	from project.configurations.embeddedJetty
+	
+	append('META-INF/spring.handlers')
+	append('META-INF/spring.schemas')
 
-apply from: 'rest.gradle'
+	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA', "about.html", "about_files/**", "readme.txt", "plugin.properties", "jetty-dir.css"
+	exclude 'notice.txt', 'license.txt', 'overview.html', 'changelog.txt'
+}
+
+task shadowJarExec(type: JavaExec, dependsOn:shadowJar) {
+	main = '-jar'
+	args shadowJar.archivePath
+}
+
+task shadowJarExecDebug(type: Exec) { commandLine 'gradle', 'shadowJarExec', '--debug-jvm' }
