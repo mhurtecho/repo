@@ -62,5 +62,7 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-#old gradle build (with gretty)
-_build.gradle
+#idea project files
+*.iml
+*.ipr
+*.iws
