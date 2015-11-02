@@ -1,13 +1,11 @@
 package com.rdbusiness.mongodb.repo;
 
-import java.io.Serializable;
-
+import com.rdbusiness.rest.bean.BeanUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.rdbusiness.rest.bean.XXX;
+import java.io.Serializable;
 
 @Repository
-public interface XXXRepository extends MongoRepository<XXX, Serializable>{
-
+public interface UserRepository extends MongoRepository<BeanUser, Serializable>{
 }

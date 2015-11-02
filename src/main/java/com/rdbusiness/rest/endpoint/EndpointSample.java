@@ -1,7 +1,6 @@
 package com.rdbusiness.rest.endpoint;
 
-import com.rdbusiness.rest.bean.Person;
-import com.rdbusiness.rest.bean.Sample;
+import com.rdbusiness.rest.bean.BeanSample;
 import com.rdbusiness.rest.service.Service;
 
 import javax.inject.Inject;
@@ -10,21 +9,21 @@ import javax.ws.rs.Path;
 import java.util.List;
 
 @Path("/sample")
-public class EndpointSample extends Endpoint<Sample> {
+public class EndpointSample extends Endpoint<BeanSample> {
 	
 	@Inject	@Named("sample")
-	private Service<Sample> service;
+	private Service<BeanSample> service;
 	
 
-	public List<Sample> getList() {
+	public List<BeanSample> getList() {
 		return service.getList();
 	}
 
-	public Sample get(String id) {
+	public BeanSample get(String id) {
 		return service.get(id);
 	}
 
-	public Sample update(String id, Sample sample) {
+	public BeanSample update(String id, BeanSample sample) {
 		return service.update(sample);
 	}
 
@@ -32,7 +31,7 @@ public class EndpointSample extends Endpoint<Sample> {
 		service.delete(id);
 	}
 
-	public Sample create(Sample sample) {
+	public BeanSample create(BeanSample sample) {
 		return service.create(sample);
 	}
 }

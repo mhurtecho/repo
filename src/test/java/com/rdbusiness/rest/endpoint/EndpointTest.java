@@ -82,8 +82,8 @@ public class EndpointTest extends JerseyTest {
 
 	static {
 		endpoints = new ArrayList<>();
-		endpoints.add(EndpointProduct.class);
-		endpoints.add(EndpointPerson.class);
+		endpoints.add(EndpointSample.class);
+		endpoints.add(EndpointUser.class);
 	}
 
 }

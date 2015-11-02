@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Document
-public class Sample {
+public class BeanSample extends Bean{
 	@Id
 	private String id;
 	private String field1;
@@ -43,8 +43,8 @@ public class Sample {
 		if (this == obj) {
 			return true;
 		}
-		if (obj instanceof Sample) {
-			Sample p = (Sample) obj;
+		if (obj instanceof BeanSample) {
+			BeanSample p = (BeanSample) obj;
 
 			if (this.getId().equals(p.getId()) && this.getField1().equals(p.getField1())) {
 				return true;
@@ -55,7 +55,10 @@ public class Sample {
 
 	@Override
 	public String toString() {
-		return "{\"id\":\"" + id + "\",\"field1"+ "\",\"field2\":\"" + field2 + "\"}";
+		return "BeanSample{" +
+				"id='" + id + '\'' +
+				", field1='" + field1 + '\'' +
+				", field2=" + field2 +
+				'}';
 	}
-
 }
