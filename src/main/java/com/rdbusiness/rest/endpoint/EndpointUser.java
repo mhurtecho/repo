@@ -10,28 +10,29 @@ import java.util.List;
 
 @Path("/user")
 public class EndpointUser extends Endpoint<BeanUser> {
-	
-	@Inject	@Named("user")
-	private Service<BeanUser> service;
-	
 
-	public List<BeanUser> getList() {
-		return service.getList();
-	}
+    @Inject
+    @Named("user")
+    private Service<BeanUser> service;
 
-	public BeanUser get(String id) {
-		return service.get(id);
-	}
 
-	public BeanUser update(String id, BeanUser user) {
-		return service.update(user);
-	}
+    public List<BeanUser> getList() {
+        return service.getList();
+    }
 
-	public void delete(String id) {
-		service.delete(id);
-	}
+    public BeanUser get(String id) {
+        return service.get(id);
+    }
 
-	public BeanUser create(BeanUser user) {
-		return service.create(user);
-	}
+    public BeanUser update(String id, BeanUser user) {
+        return service.update(user);
+    }
+
+    public BeanUser delete(String id) {
+        return service.delete(id);
+    }
+
+    public BeanUser create(BeanUser user) {
+        return service.create(user);
+    }
 }

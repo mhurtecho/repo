@@ -10,28 +10,29 @@ import java.util.List;
 
 @Path("/sample")
 public class EndpointSample extends Endpoint<BeanSample> {
-	
-	@Inject	@Named("sample")
-	private Service<BeanSample> service;
-	
 
-	public List<BeanSample> getList() {
-		return service.getList();
-	}
+    @Inject
+    @Named("sample")
+    private Service<BeanSample> service;
 
-	public BeanSample get(String id) {
-		return service.get(id);
-	}
 
-	public BeanSample update(String id, BeanSample sample) {
-		return service.update(sample);
-	}
+    public List<BeanSample> getList() {
+        return service.getList();
+    }
 
-	public void delete(String id) {
-		service.delete(id);
-	}
+    public BeanSample get(String id) {
+        return service.get(id);
+    }
 
-	public BeanSample create(BeanSample sample) {
-		return service.create(sample);
-	}
+    public BeanSample update(String id, BeanSample sample) {
+        return service.update(sample);
+    }
+
+    public BeanSample delete(String id) {
+        return service.delete(id);
+    }
+
+    public BeanSample create(BeanSample sample) {
+        return service.create(sample);
+    }
 }

@@ -59,6 +59,7 @@ public class BeanSample extends Bean{
 				"id='" + id + '\'' +
 				", field1='" + field1 + '\'' +
 				", field2=" + field2 +
-				'}';
+				'}' +
+				super.toString();
 	}
 }

@@ -1,89 +1,79 @@
 package com.rdbusiness.rest.endpoint;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
-
+import com.rdbusiness.application.Config;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Response;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 public class EndpointTest extends JerseyTest {
 
-	@Override
-	protected Application configure() {
-		return new ResourceConfig() {
-			{
-				for (Class<?> endpoint : endpoints) {
-					register(endpoint);
-				}
-				property("contextConfigLocation", "classpath:beans_test.xml");
-			}
-		};
-	}
+    private ResourceConfig conf;
 
-	@Test
-	public void testEndpoint() throws Exception {
-		Class<?> clazz;
-		Object object;
-		Method method;
-		Field field;
+    @Override
+    protected Application configure() {
+        return conf = new ResourceConfig() {
+            {
+                packages(Config.PACKAGE);
+                property("contextConfigLocation", Config.SPRING_CONFIG_TEST);
+            }
+        };
+    }
 
-		for (Class<?> endpoint : endpoints) {
-			clazz = Class.forName(endpoint.getCanonicalName() + "Test");
+    @Test
+    public void testEndpoint() throws Exception {
+        Class<?> clazz;
+        Object object;
+        Method method;
+        Field field;
 
-			object = clazz.newInstance();
+        for (Class<?> endpoint : conf.getClasses()) {
+            clazz = Class.forName(endpoint.getCanonicalName() + "Test");
 
-			field = clazz.getDeclaredField("endpoint");
-			field.setAccessible(true);
-			field.set(object, this);
+            object = clazz.newInstance();
 
-			method = clazz.getMethod("testCRUD", new Class<?>[] {});
-			method.invoke(object, new Object[] {});
-		}
-	}
+            field = clazz.getDeclaredField("endpoint");
+            field.setAccessible(true);
+            field.set(object, this);
 
-	public Response target(crud operation, String url, Entity<?> entity) {
-		Response response = null;
+            method = clazz.getMethod("testCRUD", new Class<?>[]{});
+            method.invoke(object, new Object[]{});
+        }
+    }
 
-		switch (operation) {
-		case CREATE:
-			response = target(url).request().post(entity);
-			break;
-		case DELETE:
-			response = target(url).request().delete();
-			break;
-		case GET:
-			break;
-		case UPDATE:
-			response = target(url).request().put(entity);
-			break;
-		default:
-			break;
-		}
+    public Response target(crud operation, String url, Entity<?> entity) {
+        Response response = null;
 
-		return response;
-	}
+        switch (operation) {
+            case CREATE:
+                response = target(url).request().post(entity);
+                break;
+            case DELETE:
+                response = target(url).request().delete();
+                break;
+            case GET:
+                break;
+            case UPDATE:
+                response = target(url).request().put(entity);
+                break;
+            default:
+                break;
+        }
 
-	public Object target(String url, Class<?> clazz) {
-		return target(url).request().get(clazz);
-	}
+        return response;
+    }
 
-	public enum crud {
-		CREATE, UPDATE, DELETE, GET
-	}
+    public <T> T target(String url, Class<T> clazz) {
+        return target(url).request().get(clazz);
+    }
 
-	private static List<Class<?>> endpoints;
-
-	static {
-		endpoints = new ArrayList<>();
-		endpoints.add(EndpointSample.class);
-		endpoints.add(EndpointUser.class);
-	}
+    public enum crud {
+        CREATE, UPDATE, DELETE, GET
+    }
 
 }

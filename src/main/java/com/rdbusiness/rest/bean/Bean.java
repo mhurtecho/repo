@@ -1,33 +1,28 @@
 package com.rdbusiness.rest.bean;
 
+import com.rdbusiness.rest.bean.ext.Audit;
+
 public class Bean {
 
-    private String userId;
-    private long createTime;
-    private long modifyTime;
+    private Audit audit;
 
+    public Audit getAudit() {
+        if (audit == null) {
+            audit = new Audit();
+        }
 
-    public String getUserId() {
-        return userId;
+        return audit;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAudit(Audit audit) {
+        this.audit = audit;
     }
 
-    public long getCreateTime() {
-        return createTime;
+    @Override
+    public String toString() {
+        return "Bean{" +
+                "audit=" + audit +
+                '}';
     }
 
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
-    }
-
-    public long getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(long modifyTime) {
-        this.modifyTime = modifyTime;
-    }
 }

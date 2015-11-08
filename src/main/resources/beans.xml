@@ -10,7 +10,8 @@
     http://www.springframework.org/schema/data/mongo
     http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
-	<context:component-scan base-package="com.rdbusiness.rest.service, com.rdbusiness.rest.endpoint" />
+	<context:component-scan base-package="com.rdbusiness.rest.service" />
+	<context:component-scan base-package="com.rdbusiness.application.spring" />
 
 <!-- 	<mongo:mongo id="mongo" host="mongodb69463-app-zero.jelasticlw.com.br" port="27017" /> -->
 <!--  	<mongo:mongo id="mongo" host="ds041144.mongolab.com" port="41144" />  -->

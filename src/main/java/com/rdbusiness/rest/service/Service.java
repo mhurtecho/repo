@@ -2,17 +2,15 @@ package com.rdbusiness.rest.service;
 
 import java.util.List;
 
-
 public interface Service<T> {
 
-	public List<T> getList();
+    List<T> getList();
 
-	public T get(String id);
+    T get(String id);
 
-	public T update(T t);
+    T update(T s);
 
-	public void delete(String id);
+    T delete(String id);
 
-	public T create(T t);
-		
+    T create(T s);
 }
